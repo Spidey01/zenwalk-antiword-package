@@ -28,12 +28,19 @@ slackdesc=\
 
 
 build() {
-    local docdir="${startdir}/pkg/usr/doc/${pkgname}-${pkgver}"
+    local docdir mandir
+    
+    docdir="${startdir}/pkg/usr/doc/${pkgname}-${pkgver}"
+    mandir="${startdir}/pkg/usr/man/man1"
 
     cd "${startdir}/src/${pkgname}-${pkgver}"
 
     # for some reason docs=() doesn't support subdirs yet, so do it manually.
     mkdir -p "$docdir" && cp -va Docs/* "$docdir"
+
+    # dumbass makefile doesn't install the manual page
+    mkdir -p $mandir && \
+        gzip -c "${docdir}/${pkgname}.1" > "${mandir}/${pkgname}.1.gz"
 
     make -e CFLAGS="${CFLAGS} -O2 -DNDEBUG" \
         DESTDIR="${startdir}/pkg" \
