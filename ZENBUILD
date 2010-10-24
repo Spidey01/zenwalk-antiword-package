@@ -2,7 +2,7 @@
 #
 # Please report any issues with this package via Github:
 #
-# 	http://github.com/Spidey01/zenwalk-antiword-package/issues
+#   http://github.com/Spidey01/zenwalk-antiword-package/issues
 #
 # If you must send an E-Mail, prefix the subject line with the package name, or
 # some other means of identifying it as NON-SPAM.
@@ -15,11 +15,6 @@ zenver=64
 arch=i486
 source=("http://www.winfield.demon.nl/linux/${pkgname}-${pkgver}.tar.gz")
 sourcetemplate="http://dl.dropbox.com/u/7012687/zenwalk/packages/${pkgname}"
-docs=( "Docs/COPYING" "Docs/ChangeLog" "Docs/Emacs" "Docs/Exmh" "Docs/FAQ"
-	"Docs/History" "Docs/Mozilla" "Docs/Mutt" "Docs/Netscape" "Docs/QandA"
-	"Docs/ReadMe" "Docs/antiword.1" "Docs/antiword.man" 
-	"Docs/antiword.old.php" "Docs/antiword.php" "Docs/testdoc.doc")
-
 url="http://www.winfield.demon.nl/"
 
 slackdesc=\
@@ -33,16 +28,21 @@ slackdesc=\
 
 
 build() {
-	cd "${startdir}/src/${pkgname}-${pkgver}"
+    local docdir="${startdir}/pkg/doc/${pkgname}-${pkgver}"
 
-	make -e CFLAGS="${CFLAGS} -O2 -DNDEBUG" \
-		DESTDIR="${startdir}/pkg" \
-		GLOBAL_INSTALL_DIR="/usr/bin" \
-		global_install || return 1
+    cd "${startdir}/src/${pkgname}-${pkgver}"
 
-	# make sure permissions are OK
-	cd "${startdir}/pkg"
-	find . -type d -exec chmod 755 '{}' \;
-	find . -type f -exec chmod 744 '{}' \;
-	chmod 755 usr/bin/*
+    # for some reason docs=() doesn't support subdirs yet, so do it manually.
+    cp -va Doc/* "$docdir"
+
+    make -e CFLAGS="${CFLAGS} -O2 -DNDEBUG" \
+        DESTDIR="${startdir}/pkg" \
+        GLOBAL_INSTALL_DIR="/usr/bin" \
+        global_install || return 1
+
+    # make sure permissions are OK
+    cd "${startdir}/pkg"
+    find . -type d -exec chmod 755 '{}' \;
+    find . -type f -exec chmod 744 '{}' \;
+    chmod 755 usr/bin/*
 }
