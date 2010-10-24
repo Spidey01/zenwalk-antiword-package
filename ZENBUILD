@@ -28,12 +28,12 @@ slackdesc=\
 
 
 build() {
-    local docdir="${startdir}/pkg/doc/${pkgname}-${pkgver}"
+    local docdir="${startdir}/pkg/usr/doc/${pkgname}-${pkgver}"
 
     cd "${startdir}/src/${pkgname}-${pkgver}"
 
     # for some reason docs=() doesn't support subdirs yet, so do it manually.
-    cp -va Doc/* "$docdir"
+    mkdir -p "$docdir" && cp -va Docs/* "$docdir"
 
     make -e CFLAGS="${CFLAGS} -O2 -DNDEBUG" \
         DESTDIR="${startdir}/pkg" \
