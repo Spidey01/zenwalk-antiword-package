@@ -11,7 +11,7 @@
 pkgname=antiword
 pkgver=0.37
 pkgrel=1
-zenver=64
+zenver=66
 arch=i486
 source=("http://www.winfield.demon.nl/linux/${pkgname}-${pkgver}.tar.gz")
 sourcetemplate="http://dl.dropbox.com/u/7012687/zenwalk/packages/${pkgname}"
